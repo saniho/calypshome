@@ -1,0 +1,258 @@
+# Exemple de configuration dans configuration.yaml
+# (Non nécessaire car la configuration se fait via l'interface UI)
+
+# Pour activer les logs détaillés :
+logger:
+  default: info
+  logs:
+    custom_components.calypshome: debug
+
+# Exemples d'automatisations
+automation:
+  # Fermer tous les volets au coucher du soleil
+  - alias: "Fermer volets au coucher du soleil"
+    trigger:
+      platform: sun
+      event: sunset
+      offset: "-00:30:00"  # 30 minutes avant le coucher
+    action:
+      - service: cover.close_cover
+        target:
+          entity_id:
+            - cover.ch_romane
+            - cover.ch_parental
+            - cover.fenetre_salon
+            - cover.cuisine
+            - cover.baie_vitree
+            - cover.ch_marine
+
+  # Ouvrir tous les volets au lever du soleil
+  - alias: "Ouvrir volets au lever du soleil"
+    trigger:
+      platform: sun
+      event: sunrise
+    action:
+      - service: cover.open_cover
+        target:
+          entity_id:
+            - cover.ch_romane
+            - cover.ch_parental
+            - cover.fenetre_salon
+            - cover.cuisine
+            - cover.baie_vitree
+            - cover.ch_marine
+
+  # Fermer les volets si température extérieure > 30°C
+  - alias: "Fermer volets canicule"
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.temperature_exterieure
+      above: 30
+    condition:
+      - condition: sun
+        after: sunrise
+        before: sunset
+    action:
+      - service: cover.close_cover
+        target:
+          entity_id:
+            - cover.fenetre_salon
+            - cover.baie_vitree
+
+# Exemples de scripts
+script:
+  # Scénario "Bonne nuit" - Fermer tous les volets
+  bonne_nuit:
+    alias: "Bonne nuit"
+    sequence:
+      - service: cover.close_cover
+        target:
+          entity_id: all
+
+  # Scénario "Réveil doux" - Ouvrir progressivement
+  # Remplacez cover.votre_volet par le nom réel
+  reveil_doux:
+    alias: "Réveil doux"
+    sequence:
+      - service: cover.set_cover_position
+        target:
+          entity_id: cover.votre_volet  # Votre volet de chambre
+        data:
+          position: 25
+      - delay: "00:05:00"
+      - service: cover.set_cover_position
+        target:
+          entity_id: cover.votre_volet
+        data:
+          position: 50
+      - delay: "00:05:00"
+      - service: cover.open_cover
+        target:
+          entity_id: cover.votre_volet
+
+  # Scénario "Ambiance cinéma"
+  cinema:
+    alias: "Ambiance cinéma"
+    sequence:
+      - service: cover.close_cover
+        target:
+          entity_id: all  # Ou spécifiez vos volets du salon
+
+  # Mi-ouverture pour ventilation
+  ventilation:
+    alias: "Ventilation"
+    sequence:
+      - service: cover.set_cover_position
+        target:
+          entity_id: all  # Ou listez vos volets
+        data:
+          position: 40
+
+# Groupes de volets (optionnel)
+# Remplacez par vos noms réels de volets
+cover:
+  - platform: group
+    name: "Volets Chambres"
+    entities:
+      - cover.volet_chambre_1
+      - cover.volet_chambre_2
+      # Ajoutez vos volets ici
+
+  - platform: group
+    name: "Volets Salon"
+    entities:
+      - cover.volet_salon_1
+      - cover.volet_salon_2
+      # Ajoutez vos volets ici
+# Exemple de configuration dans configuration.yaml
+# (Non nécessaire car la configuration se fait via l'interface UI)
+
+# ⚠️ IMPORTANT : Remplacez cover.volet_X par les noms réels de vos volets
+# Les noms exacts apparaîtront dans Configuration → Entités après l'installation
+
+# Pour activer les logs détaillés :
+logger:
+  default: info
+  logs:
+    custom_components.calypshome: debug
+
+# Exemples d'automatisations
+automation:
+  # Fermer tous les volets au coucher du soleil
+  - alias: "Fermer volets au coucher du soleil"
+    trigger:
+      platform: sun
+      event: sunset
+      offset: "-00:30:00"  # 30 minutes avant le coucher
+    action:
+      - service: cover.close_cover
+        target:
+          entity_id: all  # Ferme TOUS les volets
+
+  # OU spécifier des volets précis :
+  - alias: "Fermer volets spécifiques au coucher"
+    trigger:
+      platform: sun
+      event: sunset
+    action:
+      - service: cover.close_cover
+        target:
+          entity_id:
+            - cover.volet_1  # Remplacez par vos noms réels
+            - cover.volet_2
+            - cover.volet_3
+
+  # Ouvrir tous les volets au lever du soleil
+  - alias: "Ouvrir volets au lever du soleil"
+    trigger:
+      platform: sun
+      event: sunrise
+    action:
+      - service: cover.open_cover
+        target:
+          entity_id: all
+
+  # Fermer les volets si température extérieure > 30°C
+  - alias: "Fermer volets canicule"
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.temperature_exterieure
+      above: 30
+    condition:
+      - condition: sun
+        after: sunrise
+        before: sunset
+    action:
+      - service: cover.close_cover
+        target:
+          entity_id: all  # Ou spécifiez les volets concernés
+
+# Exemples de scripts
+script:
+  # Scénario "Bonne nuit" - Fermer tous les volets
+  bonne_nuit:
+    alias: "Bonne nuit"
+    sequence:
+      - service: cover.close_cover
+        target:
+          entity_id: all
+
+  # Scénario "Réveil doux" - Ouvrir progressivement
+  reveil_doux:
+    alias: "Réveil doux"
+    sequence:
+      - service: cover.set_cover_position
+        target:
+          entity_id: cover.ch_parental
+        data:
+          position: 25
+      - delay: "00:05:00"
+      - service: cover.set_cover_position
+        target:
+          entity_id: cover.ch_parental
+        data:
+          position: 50
+      - delay: "00:05:00"
+      - service: cover.open_cover
+        target:
+          entity_id: cover.ch_parental
+
+  # Scénario "Ambiance cinéma"
+  cinema:
+    alias: "Ambiance cinéma"
+    sequence:
+      - service: cover.close_cover
+        target:
+          entity_id: cover.fenetre_salon
+      - service: cover.close_cover
+        target:
+          entity_id: cover.baie_vitree
+
+  # Mi-ouverture pour ventilation
+  ventilation:
+    alias: "Ventilation"
+    sequence:
+      - service: cover.set_cover_position
+        target:
+          entity_id:
+            - cover.ch_romane
+            - cover.ch_parental
+            - cover.ch_marine
+        data:
+          position: 40
+
+# Groupes de volets
+cover:
+  - platform: group
+    name: "Volets Chambres"
+    entities:
+      - cover.ch_romane
+      - cover.ch_parental
+      - cover.ch_marine
+
+  - platform: group
+    name: "Volets Salon"
+    entities:
+      - cover.fenetre_salon
+      - cover.baie_vitree
+

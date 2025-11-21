@@ -1,0 +1,8 @@
+{
+  "name": "Calyps'HOME",
+  "render_readme": true,
+  "domains": ["cover"],
+  "iot_class": "Local Polling",
+  "homeassistant": "2023.1.0"
+}
+

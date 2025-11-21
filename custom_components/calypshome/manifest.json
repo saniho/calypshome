@@ -1,0 +1,11 @@
+{
+  "domain": "calypshome",
+  "name": "Calyps'HOME",
+  "version": "1.0.4",
+  "documentation": "https://github.com/yourusername/calypshome",
+  "requirements": ["requests>=2.31.0"],
+  "codeowners": ["@yourusername"],
+  "config_flow": true,
+  "iot_class": "local_polling"
+}
+

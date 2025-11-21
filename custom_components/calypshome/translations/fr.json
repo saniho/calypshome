@@ -1,0 +1,22 @@
+
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configuration de Calyps'HOME",
+        "description": "Entrez les informations de connexion à votre box Calyps'HOME",
+        "data": {
+          "host": "Adresse IP ou nom d'hôte",
+          "login": "Email de connexion",
+          "password": "Mot de passe"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Impossible de se connecter à la box Calyps'HOME. Vérifiez l'adresse IP, l'email et le mot de passe."
+    },
+    "abort": {
+      "already_configured": "Cette box Calyps'HOME est déjà configurée"
+    }
+  }
+}
